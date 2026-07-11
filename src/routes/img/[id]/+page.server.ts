@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 		headers: spiritHeaders
 	})
 		.then((response) => response.json())
-		.catch(() => error(404, 'Not found'));
+		.catch(() => error(404, 'Not Found'));
 
 	let userData = await fetch(`https://api.axolotlclient.com/v1/user/${imageData.uploader}`, {
 		mode: 'no-cors',
