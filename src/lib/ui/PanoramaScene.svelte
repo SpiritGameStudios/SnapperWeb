@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { Mesh, MeshBasicMaterial } from 'three';
+	import { Group, Mesh, MeshBasicMaterial, type Object3DEventMap } from 'three';
 	import { T, useTask } from '@threlte/core';
 	import { asset } from '$app/paths';
 	import { useGltf, useTexture } from '@threlte/extras';
 	import { keyboardState } from '$lib/state.svelte';
-	import type { PictureData } from '$lib/types';
 
 	const {
 		onRendered,
@@ -16,54 +15,91 @@
 
 	const id = (() => imageId)();
 
-	const panoramaTexture = useTexture(`https://snapper.spiritstudios.dev/img/${id}/raw`);
+	const panoramaTexture = useTexture(`/img/${id}/raw`, {
+		transform: (texture) => {
+			texture.flipY = false;
+			return texture;
+		}
+	});
 	const panoramaModel = useGltf(asset('/assets/panorama_model.gltf'));
 
-	if ($panoramaModel && $panoramaTexture) {
-		const model = $panoramaModel.scene;
-		model.traverse(function (child) {
-			if (child instanceof Mesh) {
-				child.material.map = $panoramaTexture;
-			}
-		});
-	}
+	panoramaTexture.then((texture) => {
+		if ($panoramaModel && texture) {
+			const model = $panoramaModel.scene;
+			model.traverse(function (child) {
+				if (child instanceof Mesh) {
+					child.material.map = texture;
+				}
+			});
 
-	let speedModifier = $state(20);
+			// Downloads the loaded texture for testing purposes
+			/*if (browser) {
+				// Source - https://stackoverflow.com/a/22172860
+				// Posted by ˈvɔlə, modified by community. See post 'Timeline' for change history
+				// Retrieved 2026-07-11, License - CC BY-SA 4.0
 
-	keyboardState.listeners.push((event) => {
-		console.log(keyboardState.currentKey);
-		if (keyboardState.currentKey === 'ArrowUp') {
-			speedModifier -= 10;
-		}
-		if (keyboardState.currentKey === 'ArrowDown') {
-			speedModifier += 20;
+				function getBase64Image(img: HTMLImageElement) {
+					var canvas = document.createElement('canvas');
+					canvas.width = img.width;
+					canvas.height = img.height;
+					var ctx = canvas.getContext('2d');
+					ctx?.drawImage(img, 0, 0);
+					var dataURL = canvas.toDataURL('image/png');
+					return dataURL;
+				}
+
+				var base64 = getBase64Image(texture.image);
+				// window.location.href = 'data:application/octet-stream;base64,' + img;
+				const a = document.createElement('a');
+				a.href = base64;
+				a.download = 'image.png';
+				a.click();
+			} */
 		}
 	});
 
-	$inspect(keyboardState.listeners);
+	let rotationModifier = $state(20);
+
+	$effect(() => {
+		const speedModifier0 = !keyboardState.currentKeys['ArrowDown'] ? 1 : 2;
+		const speedModifier1 = !keyboardState.currentKeys[' '] ? 2 : 0.5;
+		const speedModifier2 = !keyboardState.currentKeys['Control'] ? 1 : 0.25;
+		const speedModifier3 = !keyboardState.currentKeys['Shift'] ? 1 : 0.5;
+		const speedModifier4 = !keyboardState.currentKeys['ArrowUp'] ? 1 : 0.5;
+		const directionModifier = !keyboardState.currentKeys['ArrowLeft'] ? 1 : -1;
+		const baseModifier = 13;
+
+		rotationModifier =
+			baseModifier *
+			directionModifier *
+			speedModifier0 *
+			speedModifier1 *
+			speedModifier2 *
+			speedModifier3 *
+			speedModifier4;
+	});
 
 	let rotation = $state(45);
 	useTask((delta) => {
-		rotation += delta / speedModifier;
+		rotation += delta / rotationModifier;
 	});
 </script>
 
 <T.PerspectiveCamera
 	makeDefault
 	position={[0, 100, 0]}
-	fov={100}
+	fov={90}
 	oncreate={(ref) => {
-		ref.lookAt(10, 95, 0);
+		ref.lookAt(20, 97, 0);
 	}}
 ></T.PerspectiveCamera>
 
-<T.AmbientLight intensity={2} position={[0, 10, 10]} />
+<T.AmbientLight intensity={1} position={[0, 100, 0]} />
 {#if $panoramaTexture && $panoramaModel}
 	<T.MeshBasicMaterial
 		oncreate={(event) => onRendered(event)}
 		scale={80}
 		is={$panoramaModel.scene}
 		rotation.y={rotation}
-		map={$panoramaTexture}
 	/>
 {/if}

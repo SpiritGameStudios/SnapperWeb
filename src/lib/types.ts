@@ -45,6 +45,6 @@ export type AxolotlUserData = {
 // Keyboard handling
 
 export type KeyboardStateType = {
-	currentKey: string;
+	currentKeys: { [key: string]: boolean };
 	listeners: ((event: KeyboardEvent) => void)[];
 };

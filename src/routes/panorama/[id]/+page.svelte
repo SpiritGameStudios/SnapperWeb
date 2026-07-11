@@ -38,7 +38,7 @@
 				await navigator.share({
 					url: `https://snapper.spiritstudios.dev/img/${data.id}`,
 					title: `${data.image.filename} on Snapper Web`,
-					text: `Image shared at ${formatDateTime(new Date(data.image.shared_at))} via Snapper`,
+					text: `Panorama shared at ${formatDateTime(new Date(data.image.shared_at))} via Snapper`,
 					files: [
 						new File([getImageBlob(data.image.file)], data.image.filename, {
 							type: 'image/png'
@@ -60,7 +60,7 @@
 </script>
 
 <svelte:head>
-	<title>{data.image.filename} | Snapper Web</title>
+	<title>{data.image.filename} | Snapper</title>
 	<meta name="title" content={`${data.image.filename} on Snapper Web`} />
 	<meta
 		name="description"

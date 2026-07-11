@@ -54,7 +54,7 @@
 
 <svelte:head>
 	<title>{data.image.filename} | Snapper Web</title>
-	<meta name="title" content={`${data.image.filename} on Snapper Web`} />
+	<meta name="title" content={`${data.image.filename} on Snapper`} />
 	<meta
 		name="description"
 		content={`Image shared at ${formatDate(new Date(data.image.shared_at))} via Snapper`}

@@ -6,10 +6,7 @@
 	let { children } = $props();
 </script>
 
-<svelte:window
-	onkeydown={(event) => handleKeys(event, true)}
-	onkeyup={(event) => handleKeys(event, false)}
-/>
+<svelte:window onkeydown={(event) => handleKeys(event)} onkeyup={(event) => handleKeys(event)} />
 
 <svelte:head>
 	<meta name="theme-color" content="#8400ff" />

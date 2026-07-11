@@ -1,5 +1,6 @@
 {
 	"asset": {
+		"copyright": "Spirit Studios",
 		"generator": "Khronos glTF Blender I/O v4.0.44",
 		"version": "2.0"
 	},
@@ -22,10 +23,14 @@
 			"alphaCutoff": 0.05000000074505806,
 			"alphaMode": "MASK",
 			"doubleSided": true,
+			"emissiveFactor": [1, 1, 1],
+			"emissiveTexture": {
+				"index": 0
+			},
 			"name": "Material_0",
 			"pbrMetallicRoughness": {
 				"baseColorTexture": {
-					"index": 0
+					"index": 1
 				},
 				"metallicFactor": 0
 			}
@@ -51,13 +56,17 @@
 		{
 			"sampler": 0,
 			"source": 0
+		},
+		{
+			"sampler": 0,
+			"source": 0
 		}
 	],
 	"images": [
 		{
 			"mimeType": "image/png",
-			"name": "panorama_large",
-			"uri": "panorama_large.png"
+			"name": "panorama_small",
+			"uri": "panorama_small.png"
 		}
 	],
 	"accessors": [
@@ -125,7 +134,7 @@
 	"buffers": [
 		{
 			"byteLength": 840,
-			"uri": "panorama_model_v4.bin"
+			"uri": "panorama_model_v5.bin"
 		}
 	]
 }

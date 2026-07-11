@@ -27,12 +27,8 @@ export function getImageBlob(data: string) {
 	return imageBlob;
 }
 
-export function handleKeys(event: KeyboardEvent, keyDown: boolean) {
-	if (!keyDown) {
-		keyboardState.currentKey = '';
-		return;
-	}
-	keyboardState.currentKey = event.key;
+export function handleKeys(event: KeyboardEvent) {
+	keyboardState.currentKeys[event.key] = event.type == 'keydown';
 	keyboardState.listeners.forEach((listener) => {
 		listener(event);
 	});

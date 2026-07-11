@@ -14,9 +14,9 @@ export const GET: RequestHandler = async ({ params }) => {
 
 	const response = new Response(imageBlob, {
 		headers: {
+			'Access-Control-Allow-Origin': '*',
 			'Content-Type': 'image/png',
-			'Content-Length': imageBlob.size.toString(),
-			'Access-Control-Allow-Origin': 'localhost'
+			'Content-Length': imageBlob.size.toString()
 		}
 	});
 
