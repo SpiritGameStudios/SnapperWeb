@@ -1,11 +1,13 @@
 <script lang="ts">
-	import { Group, TextureLoader, type Object3DEventMap } from 'three';
+	import { Group, TextureLoader, MeshStandardMaterial, type Object3DEventMap } from 'three';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { T, useLoader, useTask } from '@threlte/core';
 	import { asset } from '$app/paths';
 
 	const panoramaTexture = useLoader(TextureLoader).load(asset('/assets/panorama_test.png'));
 	const panoramaModel = useLoader(GLTFLoader).load(asset('/assets/panorama_model.gltf'));
+
+	const panoramaMaterial = new MeshStandardMaterial({});
 
 	let rotation = $state(45);
 	useTask((delta) => {
