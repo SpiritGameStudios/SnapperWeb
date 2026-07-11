@@ -7,7 +7,6 @@
 	import { browser } from '$app/environment';
 	import { Canvas } from '@threlte/core';
 	import PanoramaScene from '$lib/ui/PanoramaScene.svelte';
-	import { fade } from 'svelte/transition';
 
 	function copyImage() {
 		if (browser) {

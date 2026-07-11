@@ -57,7 +57,7 @@
 		{
 			"mimeType": "image/png",
 			"name": "panorama_test",
-			"uri": "panorama_test.png"
+			"uri": "panorama_small.png"
 		}
 	],
 	"accessors": [
@@ -125,7 +125,7 @@
 	"buffers": [
 		{
 			"byteLength": 840,
-			"uri": "panorama_model_v2.bin"
+			"uri": "panorama_model_v3.bin"
 		}
 	]
 }
