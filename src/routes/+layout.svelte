@@ -1,9 +1,15 @@
 <script lang="ts">
+	import { handleKeys } from '$lib';
 	import HairlineSeparator from '$lib/ui/HairlineSeparator.svelte';
 	import '../app.css';
 
 	let { children } = $props();
 </script>
+
+<svelte:window
+	onkeydown={(event) => handleKeys(event, true)}
+	onkeyup={(event) => handleKeys(event, false)}
+/>
 
 <svelte:head>
 	<meta name="theme-color" content="#8400ff" />

@@ -41,3 +41,10 @@ export type AxolotlUserData = {
 		last_online: string;
 	};
 };
+
+// Keyboard handling
+
+export type KeyboardStateType = {
+	currentKey: string;
+	listeners: ((event: KeyboardEvent) => void)[];
+};

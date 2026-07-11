@@ -1,3 +1,5 @@
+import { keyboardState } from './state.svelte';
+
 export const spiritHeaders = {
 	'User-Agent': 'spiritgamestudios/snapperweb by Spirit Studios, hello@worldwidepixel.ca',
 	'Content-Type': 'application/json'
@@ -23,4 +25,15 @@ export function getImageBlob(data: string) {
 	const imageBlob = new Blob([imageIntArray], { type: 'image/png' });
 
 	return imageBlob;
+}
+
+export function handleKeys(event: KeyboardEvent, keyDown: boolean) {
+	if (!keyDown) {
+		keyboardState.currentKey = '';
+		return;
+	}
+	keyboardState.currentKey = event.key;
+	keyboardState.listeners.forEach((listener) => {
+		listener(event);
+	});
 }
