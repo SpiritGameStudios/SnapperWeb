@@ -88,7 +88,7 @@
 
 <div class="flex h-full justify-end flex-col items-center">
 	<div
-		class="flex bg-brand-background-secondary/50 backdrop-blur-3xl rounded-2xl border flex-col px-5 py-4 items-center gap-4"
+		class="flex bg-brand-background-secondary/50 backdrop-blur-3xl shadow-xl rounded-2xl border flex-col px-5 py-4 items-center gap-4"
 	>
 		<div class="flex flex-col items-center">
 			<span class="text-xl mb-2 font-bold">{data.image.filename}</span>

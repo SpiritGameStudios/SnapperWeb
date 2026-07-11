@@ -94,7 +94,7 @@
 	}}
 ></T.PerspectiveCamera>
 
-<T.AmbientLight intensity={1} position={[0, 100, 0]} />
+<T.AmbientLight intensity={2.2} position={[0, 100, 0]} />
 {#if $panoramaTexture && $panoramaModel}
 	<T.MeshBasicMaterial
 		oncreate={(event) => onRendered(event)}

@@ -14,7 +14,7 @@
 
 <div class="flex h-dvh flex-col">
 	<nav
-		class="flex w-full backdrop-blur-3xl bg-brand-background-secondary/50 flex-row justify-center border-b"
+		class="flex w-full backdrop-blur-3xl shadow-xl bg-brand-background-secondary/50 flex-row justify-center border-b"
 	>
 		<div
 			class="flex w-full max-w-6xl flex-row items-center justify-center gap-4 p-6 sm:justify-between"
@@ -31,7 +31,7 @@
 		</div>
 	</main>
 	<footer
-		class="flex backdrop-blur-3xl bg-brand-background-secondary/50 w-full flex-row justify-center border-t"
+		class="flex shadow-xl backdrop-blur-3xl bg-brand-background-secondary/50 w-full flex-row justify-center border-t"
 	>
 		<div class="flex w-full max-w-6xl flex-col items-center p-6 text-sm">
 			<span class="flex flex-row gap-0">
