@@ -1,73 +1,78 @@
-@import url(https://fonts.bunny.net/css?family=inter:100,200,300,400,500,600,700,800,900);
+@import url(https://fonts.bunny.net/css?family=inter:100,200,300,400,500,600,700,800,900)
+layer(utilities);
 
-@import 'tailwindcss';
+@import 'tailwindcss' layer(utilities);
 
-@font-face {
-	font-family: 'Spirit';
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: 100%;
-	src: url('/fonts/SpiritRegular.ttf') format('truetype');
-}
+@import 'tailwindcss/utilities' layer(utilities);
 
 @theme {
-	--color-brand-red: #ff0d2eff;
-	--color-brand-orange: #ff690ff;
-	--color-brand-yellow: #f1bf00ff;
-	--color-brand-green: #00ae54ff;
-	--color-brand-blue: #2b39feff;
-	--color-brand-violet: #b300ffff;
+  --color-brand-red: #ff0d2eff;
+  --color-brand-orange: #ff690ff;
+  --color-brand-yellow: #f1bf00ff;
+  --color-brand-green: #00ae54ff;
+  --color-brand-blue: #2b39feff;
+  --color-brand-violet: #b300ffff;
 
-	--color-brand-red-dark: #db003eff;
-	--color-brand-orange-dark: #e54a00ff;
-	--color-brand-yellow-dark: #d19100ff;
-	--color-brand-green-dark: #008d3aff;
-	--color-brand-blue-dark: #012ae0ff;
-	--color-brand-violet-dark: #8400ffff;
+  --color-brand-red-dark: #db003eff;
+  --color-brand-orange-dark: #e54a00ff;
+  --color-brand-yellow-dark: #d19100ff;
+  --color-brand-green-dark: #008d3aff;
+  --color-brand-blue-dark: #012ae0ff;
+  --color-brand-violet-dark: #8400ffff;
 
-	--color-project-snapper-1: #1a59edff;
-	--color-project-snapper-2: #7e82f5ff;
+  --color-project-snapper-1: #1a59edff;
+  --color-project-snapper-2: #7e82f5ff;
 
-	--color-logo-deep-purple: #8400ff;
-	--color-logo-purple: #b300ff;
-	--color-logo-blue: #2b39fe;
+  --color-logo-deep-purple: #8400ff;
+  --color-logo-purple: #b300ff;
+  --color-logo-blue: #2b39fe;
 
-	--color-brand-background: #0b0d0e;
-	--color-brand-background-secondary: #161b1d;
-	--color-brand-border: #21292c;
-	--color-brand-disabled: #374347;
-	--color-brand-text: #f6f5fa;
-	--color-brand-text-strong: #ffffff;
+  --color-brand-background: #0b0d0e;
+  --color-brand-background-secondary: #161b1d;
+  --color-brand-border: #21292c;
+  --color-brand-disabled: #374347;
+  --color-brand-text: #f6f5fa;
+  --color-brand-text-strong: #ffffff;
 
-	--font-stack:
-		ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-		'Noto Color Emoji';
-	--font-spirit: 'Spirit', var(--font-stack);
-	--font-sans: 'Inter', var(--font-stack);
+  --font-stack:
+    ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-spirit: 'Spirit', var(--font-stack);
+  --font-sans: 'Inter', var(--font-stack);
 
-	--animate-pop: pop 0.5s ease-in-out;
-	--animate-focus-pop: focus-pop 0.25s ease-in-out;
+  --animate-pop: pop 0.5s ease-in-out;
+  --animate-focus-pop: focus-pop 0.25s ease-in-out;
 
-	@keyframes pop {
-		0% {
-			transform: scale(0%);
-		}
-		80% {
-			transform: scale(110%);
-		}
-		100% {
-			transform: scale(100%);
-		}
-	}
+  @keyframes pop {
+    0% {
+      transform: scale(0%);
+    }
+    80% {
+      transform: scale(110%);
+    }
+    100% {
+      transform: scale(100%);
+    }
+  }
 
-	@keyframes focus-pop {
-		0% {
-			outline-width: 0rem;
-		}
-		100% {
-			outline-width: 0.25rem;
-		}
-	}
+  @keyframes focus-pop {
+    0% {
+      outline-width: 0rem;
+    }
+    100% {
+      outline-width: 0.25rem;
+    }
+  }
+}
+
+@layer utilities {
+  @font-face {
+    font-family: 'Spirit';
+    font-style: normal;
+    font-weight: 100;
+    font-stretch: 100%;
+    src: url('/fonts/SpiritRegular.ttf') format('truetype');
+  }
 }
 
 @layer utilities {
@@ -80,9 +85,9 @@
 	}
 
 	.tooltip-spirit {
-		@apply !bg-brand-background-secondary flex flex-col items-center !rounded-lg border text-sm shadow-2xl;
+		@apply bg-brand-background-secondary! flex flex-col items-center rounded-lg! border text-sm shadow-2xl;
 		.tip:before {
-			@apply !border-b-brand-border mx-[34.5%] mt-[-12px] hidden;
+			@apply border-b-brand-border! mx-[34.5%] mt-[-12px] hidden;
 		}
 	}
 
@@ -156,12 +161,12 @@
 	}
 
 	.spirit-heavy {
-		@apply text-brand-text-strong font-spirit !text-8xl !font-normal !tracking-normal;
+		@apply text-brand-text-strong font-spirit text-8xl! font-normal! tracking-normal!;
 	}
 }
 
-html {
-	@apply bg-brand-background text-brand-text h-full;
+@layer utilities {
+  html {
+    @apply bg-brand-background text-brand-text h-full;
+  }
 }
-
-@tailwind utilities;
