@@ -5,8 +5,9 @@
 	import type { PageProps } from './$types';
 	import Tooltip from 'sv-tooltip';
 	import { browser } from '$app/environment';
-	import { Canvas } from '@threlte/core';
-	import PanoramaScene from '$lib/ui/PanoramaScene.svelte';
+	import * as twgl from 'twgl.js';
+	import { vertex, fragment } from '$lib/shaders/panorama';
+	import { keyboardState } from '$lib/state.svelte';
 
 	function copyImage() {
 		if (browser) {
@@ -53,10 +54,121 @@
 
 	let { data }: PageProps = $props();
 
-	let canvasVisibility = $state(0);
-	function onRendered() {
-		canvasVisibility = 100;
+	// Rendering
+
+	/*
+	Bugs:
+	- all everything is completely horizontally flipped
+	- the UVs have changed due to me using 'whatever the hell has been prescribed' - the bottom and top UVs are not in the correct rotation
+	- speed is somewhat more difficult to modulate and thus has not been reimplemented yet
+	*/
+
+	let panoramaCanvas: HTMLCanvasElement;
+	let canRender = $state(true);
+	let hasRendered = $state(false);
+
+	function initGraphics(gl: WebGLRenderingContext) {
+		twgl.setDefaults({
+			attribPrefix: 'a_'
+		});
+		const m4 = twgl.m4;
+		const programInfo = twgl.createProgramInfo(gl, [vertex, fragment]);
+		const plane = twgl.primitives.createXYQuadBufferInfo(gl);
+
+		const camera = m4.identity();
+		const view = m4.identity();
+		const projection = m4.identity();
+		const viewDirection = m4.identity();
+		const viewDirectionProjection = m4.identity();
+		const viewDirectionProjectionInverse = m4.identity();
+
+		const fov = 85;
+
+		const uniforms = {
+			u_skybox: twgl.createTexture(gl, {
+				target: gl.TEXTURE_CUBE_MAP,
+				//src: `/img/${data.id}/raw`,
+				src: `/assets/panorama_test_webgl.png`,
+				flipY: 0
+			}),
+			u_viewDirectionProjectionInverse: viewDirectionProjectionInverse,
+			u_viewDirectionProjection: viewDirectionProjection,
+			u_projection: projection,
+			u_view: view
+		};
+
+		let rotationModifier = $state(1);
+
+		$effect(() => {
+			const speedModifier0 = !keyboardState.currentKeys['ArrowDown'] ? 1 : 0.5;
+			const speedModifier1 = !keyboardState.currentKeys[' '] ? 1 : 2;
+			const speedModifier2 = !keyboardState.currentKeys['Control'] ? 1 : 2;
+			const speedModifier3 = !keyboardState.currentKeys['Shift'] ? 1 : 2;
+			const speedModifier4 = !keyboardState.currentKeys['ArrowUp'] ? 1 : 2;
+			const directionModifier = !keyboardState.currentKeys['ArrowLeft'] ? 1 : -1;
+
+			rotationModifier =
+				1 *
+				directionModifier *
+				speedModifier0 *
+				speedModifier1 *
+				speedModifier2 *
+				speedModifier3 *
+				speedModifier4;
+		});
+
+		function renderPanorama(time: number) {
+			time *= 0.001;
+			gl.clearColor(0.0, 0.0, 0.0, 0.0);
+
+			twgl.resizeCanvasToDisplaySize(gl.canvas as HTMLCanvasElement);
+			gl.viewport(
+				0,
+				0,
+				(gl.canvas as HTMLCanvasElement).width,
+				(gl.canvas as HTMLCanvasElement).height
+			);
+
+			const orbitSpeed = time / 20;
+			const radius = 20;
+			const projection = m4.perspective(
+				(fov * Math.PI) / 180,
+				(gl.canvas as HTMLCanvasElement).clientWidth /
+					(gl.canvas as HTMLCanvasElement).clientHeight,
+				0.05,
+				10.0
+			);
+			const eye = [Math.cos(orbitSpeed) * radius, 4, Math.sin(orbitSpeed) * radius];
+			const target = [0, 0, 0];
+			const up = [0, 1, 0];
+
+			m4.lookAt(eye, target, up, camera);
+			m4.inverse(camera, view);
+			m4.setTranslation(view, [0, 0, 0], viewDirection);
+			m4.multiply(projection, viewDirection, viewDirectionProjection);
+			m4.inverse(viewDirectionProjection, viewDirectionProjectionInverse);
+
+			gl.useProgram(programInfo.program);
+			twgl.setBuffersAndAttributes(gl, programInfo, plane);
+			twgl.setUniforms(programInfo, uniforms);
+			twgl.drawBufferInfo(gl, plane);
+
+			requestAnimationFrame(renderPanorama);
+		}
+
+		requestAnimationFrame(renderPanorama);
+		hasRendered = true;
 	}
+
+	$effect(() => {
+		const drawContext = panoramaCanvas.getContext('webgl2');
+		if (drawContext === null) {
+			canRender = false;
+			return;
+		}
+
+		initGraphics(drawContext);
+	});
 </script>
 
 <svelte:head>
@@ -73,17 +185,19 @@
 </svelte:head>
 
 <span
-	class="fixed font-semibold w-full text-center top-0 left-0 -z-11 h-full flex flex-col items-center justify-center"
-	>Loading panorama...</span
+	class="fixed font-semibold size-full text-center top-0 left-0 -z-11 flex flex-col items-center justify-center"
 >
+	<p>Loading panorama...</p>
+	{#if !canRender}
+		<p>Your browser might not like WebGL. Sorry!</p>
+	{/if}
+</span>
 
 <div
-	style="transition: opacity 1s; opacity: {canvasVisibility}%"
-	class="fixed top-0 left-0 w-full h-full -z-10"
+	style="transition: opacity 1s; opacity: {hasRendered ? 100 : 0}%"
+	class="fixed top-0 left-0 size-full -z-10"
 >
-	<Canvas>
-		<PanoramaScene imageId={data.id} {onRendered} />
-	</Canvas>
+	<canvas class="size-full" bind:this={panoramaCanvas}></canvas>
 </div>
 
 <div class="flex h-full justify-end flex-col items-center">

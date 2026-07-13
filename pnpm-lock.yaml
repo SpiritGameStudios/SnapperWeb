@@ -20,6 +20,9 @@ importers:
       three:
         specifier: ^0.185.1
         version: 0.185.1
+      twgl.js:
+        specifier: ^7.0.0
+        version: 7.0.0
     devDependencies:
       '@sveltejs/adapter-auto':
         specifier: ^6.0.0
@@ -981,6 +984,9 @@ packages:
   tweakpane@3.1.10:
     resolution: {integrity: sha512-rqwnl/pUa7+inhI2E9ayGTqqP0EPOOn/wVvSWjZsRbZUItzNShny7pzwL3hVlaN4m9t/aZhsP0aFQ9U5VVR2VQ==}
 
+  twgl.js@7.0.0:
+    resolution: {integrity: sha512-9HHZ8emdZb2nKPU0FDIGDlkp6AD9rWFv7ThqdbmUqyBhD3WTQpLN+89w4B+YshGwD1fL6PMVpVKZqC0pikgmcA==}
+
   typescript@5.8.3:
     resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
     engines: {node: '>=14.17'}
@@ -1756,6 +1762,8 @@ snapshots:
   troika-worker-utils@0.52.0: {}
 
   tweakpane@3.1.10: {}
+
+  twgl.js@7.0.0: {}
 
   typescript@5.8.3: {}
 
